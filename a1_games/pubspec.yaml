@@ -1,0 +1,36 @@
+name: a1_games
+description: "GameRush 10 — 10 quick casual mini-games. Offline. Beat your best score."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.5
+  shared_preferences: ^2.5.3
+  google_fonts: ^6.2.1
+  share_plus: ^11.0.0
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/cars/
+    - assets/images/city/
+    - assets/images/roads/
+    - assets/images/environment/
+    - assets/images/ui/
+    - assets/sounds/
+    - assets/icons/
+    - assets/characters/
+    - assets/onboarding/
