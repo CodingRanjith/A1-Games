@@ -26,15 +26,15 @@ void main() {
     });
 
     test('isNewRecord compares correctly', () async {
-      await storage.saveBestScore(GameType.colorMatch.id, 100);
-      expect(storage.isNewRecord(GameType.colorMatch.id, 100), false);
-      expect(storage.isNewRecord(GameType.colorMatch.id, 101), true);
+      await storage.saveBestScore(GameType.carRace.id, 100);
+      expect(storage.isNewRecord(GameType.carRace.id, 100), false);
+      expect(storage.isNewRecord(GameType.carRace.id, 101), true);
     });
 
     test('increments games played', () async {
-      await storage.incrementGamesPlayed(GameType.fastMath.id);
-      await storage.incrementGamesPlayed(GameType.fastMath.id);
-      expect(storage.getGamesPlayed(GameType.fastMath.id), 2);
+      await storage.incrementGamesPlayed(GameType.carRace.id);
+      await storage.incrementGamesPlayed(GameType.carRace.id);
+      expect(storage.getGamesPlayed(GameType.carRace.id), 2);
       expect(storage.getTotalGamesPlayed(), 2);
     });
 

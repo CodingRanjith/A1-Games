@@ -1,5 +1,5 @@
 name: a1_games
-description: "GameRush 10 — 10 quick casual mini-games. Offline. Beat your best score."
+description: "Route Racer — live map car racing. Finish the route to win."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -15,6 +15,9 @@ dependencies:
   google_fonts: ^6.2.1
   share_plus: ^11.0.0
   intl: ^0.20.2
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  vector_math: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +37,25 @@ flutter:
     - assets/icons/
     - assets/characters/
     - assets/onboarding/
+    - assets/models/cars/
+    - assets/models/cars/Textures/
+    - assets/models/characters/
+    - assets/models/characters/Textures/
+    - assets/models/traffic/
+    - assets/models/traffic/Textures/
+    - assets/models/buildings/commercial/
+    - assets/models/buildings/commercial/Textures/
+    - assets/models/buildings/suburban/
+    - assets/models/buildings/suburban/Textures/
+    - assets/models/environment/
+    - assets/models/environment/Textures/
+    - assets/models/environment/props/
+    - assets/models/environment/props/Textures/
+    - assets/models/roads/
+    - assets/models/roads/Textures/
+    - assets/textures/cars/
+    - assets/textures/roads/
+    - assets/textures/buildings/
+    - assets/textures/environment/
+    - assets/audio/
+    - assets/ui/

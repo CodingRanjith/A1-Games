@@ -27,8 +27,8 @@ class CarSpriteCache {
         final targetW = path.contains('/city/')
             ? 512
             : path.contains('/cars/')
-                ? 120
-                : 96;
+                ? 480
+                : 160;
         final codec = await ui.instantiateImageCodec(
           bytes,
           targetWidth: targetW,

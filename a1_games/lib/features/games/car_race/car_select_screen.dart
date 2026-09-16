@@ -9,6 +9,11 @@ import 'package:a1_games/core/services/sound_service.dart';
 
 import 'car_catalog.dart';
 import 'car_garage_service.dart';
+import 'chennai_route.dart';
+import 'live_race_map.dart';
+import 'render/car_preview_3d.dart';
+import 'vehicle/car_config.dart';
+import 'vehicle/vehicle_plate.dart';
 
 class CarGaragePanel extends StatelessWidget {
   const CarGaragePanel({
@@ -41,7 +46,16 @@ class CarGaragePanel extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
                   ),
                   Expanded(
-                    child: Text('Garage', style: AppTextStyles.headline.copyWith(color: Colors.white)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Garage', style: AppTextStyles.headline.copyWith(color: Colors.white)),
+                        Text(
+                          '${garage.route.name} · ${garage.route.startName} → ${garage.route.endName}',
+                          style: AppTextStyles.caption.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -58,12 +72,78 @@ class CarGaragePanel extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Expanded(
-              child: Image.asset(
-                selected.asset,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.medium,
+            SizedBox(
+              height: 150,
+              child: ClipRRect(
+                borderRadius: AppRadius.medium,
+                child: LiveRaceMap(
+                  map: garage.route,
+                  satellite: garage.satelliteView,
+                  fromIndex: garage.fromIndex,
+                  toIndex: garage.toIndex,
+                  follow: false,
+                  interactive: true,
+                ),
               ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _PlaceDropdown(
+                      label: 'From',
+                      places: garage.route.waypoints,
+                      index: garage.fromIndex,
+                      maxIndex: garage.route.waypoints.length - 2,
+                      onChanged: (i) => garage.setRoute(from: i),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(Icons.arrow_forward_rounded, color: Colors.white70),
+                  ),
+                  Expanded(
+                    child: _PlaceDropdown(
+                      label: 'To',
+                      places: garage.route.waypoints,
+                      index: garage.toIndex,
+                      minIndex: garage.fromIndex + 1,
+                      onChanged: (i) => garage.setRoute(to: i),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${garage.route.tripKm(garage.fromIndex, garage.toIndex).toStringAsFixed(1)} km  ·  ETA ${garage.route.etaLabel(garage.route.tripKm(garage.fromIndex, garage.toIndex))}',
+                      style: AppTextStyles.caption.copyWith(color: Colors.white),
+                    ),
+                  ),
+                  Text('Satellite', style: AppTextStyles.caption.copyWith(color: Colors.white70)),
+                  Switch(
+                    value: garage.satelliteView,
+                    onChanged: garage.setSatellite,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: selected.id == 'cycle' || selected.id == 'bike'
+                  ? VehiclePlate(id: selected.id, color: selected.color)
+                  : CarConfigs.byId(selected.id).id == selected.id
+                      ? CarPreview3d(config: CarConfigs.byId(selected.id))
+                      : Image.asset(
+                          selected.asset,
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, _, _) => VehiclePlate(id: selected.id, color: selected.color),
+                        ),
             ),
             Text(selected.name, style: AppTextStyles.headline.copyWith(color: Colors.white)),
             Text(
@@ -110,7 +190,13 @@ class CarGaragePanel extends StatelessWidget {
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.all(6),
-                              child: Image.asset(car.asset, fit: BoxFit.contain),
+                              child: car.id == 'cycle' || car.id == 'bike'
+                                  ? VehiclePlate(id: car.id, color: car.color)
+                                  : Image.asset(
+                                      car.asset,
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (_, _, _) => VehiclePlate(id: car.id, color: car.color),
+                                    ),
                             ),
                           ),
                           Text(
@@ -283,3 +369,51 @@ class _UpgradeChip extends StatelessWidget {
     );
   }
 }
+
+class _PlaceDropdown extends StatelessWidget {
+  const _PlaceDropdown({
+    required this.label,
+    required this.places,
+    required this.index,
+    required this.onChanged,
+    this.minIndex = 0,
+    this.maxIndex,
+  });
+
+  final String label;
+  final List<RouteWaypoint> places;
+  final int index;
+  final int minIndex;
+  final int? maxIndex;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final last = maxIndex ?? places.length - 1;
+    final items = [
+      for (var i = minIndex; i <= last; i++)
+        DropdownMenuItem(
+          value: i,
+          child: Text(places[i].place, overflow: TextOverflow.ellipsis),
+        ),
+    ];
+    final value = index.clamp(minIndex, last);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: AppTextStyles.caption.copyWith(color: Colors.white54)),
+        DropdownButton<int>(
+          isExpanded: true,
+          value: value,
+          dropdownColor: const Color(0xFF1A1E28),
+          style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
+          items: items,
+          onChanged: (v) {
+            if (v != null) onChanged(v);
+          },
+        ),
+      ],
+    );
+  }
+}
+

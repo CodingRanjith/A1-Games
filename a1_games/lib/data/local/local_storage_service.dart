@@ -23,6 +23,14 @@ class LocalStorageService {
   static const _keyRacerCar = 'racer_selected_car';
   static const _keyRacerUnlocked = 'racer_unlocked_cars';
   static const _keyRacerUpgrades = 'racer_upgrades';
+  static const _keyRacerFrom = 'racer_from_index';
+  static const _keyRacerTo = 'racer_to_index';
+  static const _keyRacerSatellite = 'racer_satellite';
+  static const _keyRacerDriver = 'racer_driver';
+  static const _keyRacerCity = 'racer_city';
+  static const _keyRacerPlace = 'racer_place_name';
+  static const _keyRacerLat = 'racer_place_lat';
+  static const _keyRacerLng = 'racer_place_lng';
 
   // ── Scores ──────────────────────────────────────────
 
@@ -150,6 +158,42 @@ class LocalStorageService {
 
   Future<void> setRacerUpgrades(String raw) =>
       _prefs.setString(_keyRacerUpgrades, raw);
+
+  int getRacerFromIndex() => _prefs.getInt(_keyRacerFrom) ?? 0;
+
+  Future<void> setRacerFromIndex(int value) =>
+      _prefs.setInt(_keyRacerFrom, value);
+
+  int getRacerToIndex() => _prefs.getInt(_keyRacerTo) ?? 13;
+
+  Future<void> setRacerToIndex(int value) =>
+      _prefs.setInt(_keyRacerTo, value);
+
+  bool getRacerSatellite() => _prefs.getBool(_keyRacerSatellite) ?? false;
+
+  Future<void> setRacerSatellite(bool value) =>
+      _prefs.setBool(_keyRacerSatellite, value);
+
+  String getRacerDriver() => _prefs.getString(_keyRacerDriver) ?? 'ace';
+
+  Future<void> setRacerDriver(String id) => _prefs.setString(_keyRacerDriver, id);
+
+  String getRacerCity() => _prefs.getString(_keyRacerCity) ?? 'chennai';
+
+  Future<void> setRacerCity(String id) => _prefs.setString(_keyRacerCity, id);
+
+  String getRacerPlaceName() => _prefs.getString(_keyRacerPlace) ?? '';
+
+  Future<void> setRacerPlaceName(String name) => _prefs.setString(_keyRacerPlace, name);
+
+  double? getRacerPlaceLat() => _prefs.getDouble(_keyRacerLat);
+
+  double? getRacerPlaceLng() => _prefs.getDouble(_keyRacerLng);
+
+  Future<void> setRacerPlace(double lat, double lng) async {
+    await _prefs.setDouble(_keyRacerLat, lat);
+    await _prefs.setDouble(_keyRacerLng, lng);
+  }
 
   // ── Reset ───────────────────────────────────────────
 

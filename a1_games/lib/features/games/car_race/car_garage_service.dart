@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../data/local/local_storage_service.dart';
+import '../../setup/driver_catalog.dart';
 import 'car_catalog.dart';
+import 'chennai_route.dart';
+import 'location_search.dart';
 
 class CarUpgrades {
   const CarUpgrades({this.engine = 0, this.nitro = 0});
@@ -30,6 +33,16 @@ class CarGarageService extends ChangeNotifier {
   String focusedCarId = 'ember_gt';
   Set<String> unlocked = {'ember_gt'};
   final Map<String, CarUpgrades> upgrades = {};
+  int fromIndex = 0;
+  int toIndex = ChennaiRoute.waypoints.length - 1;
+  bool satelliteView = false;
+  String driverId = 'ace';
+  String cityId = 'chennai';
+  RaceMap? customMap;
+
+  RaceMap get route => cityId == 'custom' && customMap != null ? customMap! : RaceMaps.byId(cityId);
+
+  DriverSpec get driver => DriverCatalog.byId(driverId);
 
   RaceCarSpec get selectedCar => CarCatalog.byId(selectedCarId);
 
@@ -53,8 +66,8 @@ class CarGarageService extends ChangeNotifier {
     coins = _storage.getRacerCoins();
     selectedCarId = _storage.getSelectedRacerCar();
     unlocked = _storage.getUnlockedRacerCars();
-    if (!unlocked.contains('ember_gt')) {
-      unlocked.add('ember_gt');
+    for (final car in CarCatalog.playerCars) {
+      unlocked.add(car.id);
     }
     upgrades
       ..clear()
@@ -63,6 +76,75 @@ class CarGarageService extends ChangeNotifier {
       selectedCarId = 'ember_gt';
     }
     focusedCarId = selectedCarId;
+    cityId = _storage.getRacerCity();
+    final lat = _storage.getRacerPlaceLat();
+    final lng = _storage.getRacerPlaceLng();
+    if (cityId == 'custom' && lat != null && lng != null) {
+      customMap = mapAround(_storage.getRacerPlaceName(), lat, lng);
+    }
+    _clampRoute();
+    satelliteView = _storage.getRacerSatellite();
+    driverId = _storage.getRacerDriver();
+  }
+
+  Future<void> selectDriver(String id) async {
+    driverId = DriverCatalog.byId(id).id;
+    await _storage.setRacerDriver(driverId);
+    notifyListeners();
+  }
+
+  Future<void> setCity(String id) async {
+    cityId = RaceMaps.byId(id).id;
+    customMap = null;
+    _clampRoute(reset: true);
+    await _storage.setRacerCity(cityId);
+    await _storage.setRacerFromIndex(fromIndex);
+    await _storage.setRacerToIndex(toIndex);
+    notifyListeners();
+  }
+
+  Future<bool> searchLocation(String query) async {
+    final hit = await LocationSearch.find(query);
+    if (hit == null) return false;
+    customMap = mapAround(hit.name, hit.lat, hit.lng);
+    cityId = 'custom';
+    _clampRoute(reset: true);
+    await _storage.setRacerCity(cityId);
+    await _storage.setRacerPlaceName(hit.name);
+    await _storage.setRacerPlace(hit.lat, hit.lng);
+    await _storage.setRacerFromIndex(fromIndex);
+    await _storage.setRacerToIndex(toIndex);
+    notifyListeners();
+    return true;
+  }
+
+  void _clampRoute({bool reset = false}) {
+    final last = route.waypoints.length - 1;
+    if (reset) {
+      fromIndex = 0;
+      toIndex = last;
+      return;
+    }
+    fromIndex = _storage.getRacerFromIndex().clamp(0, last - 1);
+    toIndex = _storage.getRacerToIndex().clamp(fromIndex + 1, last);
+  }
+
+  Future<void> setRoute({int? from, int? to}) async {
+    final last = route.waypoints.length - 1;
+    if (from != null) fromIndex = from.clamp(0, last - 1);
+    if (to != null) toIndex = to.clamp(fromIndex + 1, last);
+    if (toIndex <= fromIndex) {
+      toIndex = (fromIndex + 1).clamp(1, last);
+    }
+    await _storage.setRacerFromIndex(fromIndex);
+    await _storage.setRacerToIndex(toIndex);
+    notifyListeners();
+  }
+
+  Future<void> setSatellite(bool value) async {
+    satelliteView = value;
+    await _storage.setRacerSatellite(value);
+    notifyListeners();
   }
 
   Future<void> focusCar(String id) async {

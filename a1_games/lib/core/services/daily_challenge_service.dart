@@ -20,7 +20,10 @@ class DailyChallengeService {
       stored = game.id;
       _storage.setDailyChallengeGame(key, stored);
     }
-    return GameCatalog.games.firstWhere((g) => g.id == stored);
+    return GameCatalog.games.firstWhere(
+      (g) => g.id == stored,
+      orElse: () => GameCatalog.games.first,
+    );
   }
 
   bool get isCompleted =>

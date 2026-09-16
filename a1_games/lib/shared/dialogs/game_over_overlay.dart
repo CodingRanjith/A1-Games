@@ -17,6 +17,7 @@ class GameOverOverlay extends StatelessWidget {
     required this.onReplay,
     required this.onHome,
     this.accentColor,
+    this.headline = 'GAME OVER',
   });
 
   final ScoreResult result;
@@ -24,6 +25,7 @@ class GameOverOverlay extends StatelessWidget {
   final VoidCallback onReplay;
   final VoidCallback onHome;
   final Color? accentColor;
+  final String headline;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ class GameOverOverlay extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'GAME OVER',
+                      headline,
                       style: AppTextStyles.headline.copyWith(
                         color: accent,
                         letterSpacing: 1.2,

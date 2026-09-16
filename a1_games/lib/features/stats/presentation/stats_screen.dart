@@ -21,9 +21,8 @@ class StatsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final favoriteId = stats.favoriteGameId;
-    final favorite = favoriteId == null
-        ? null
-        : GameCatalog.games.firstWhere((g) => g.id == favoriteId);
+    final matches = GameCatalog.games.where((g) => g.id == favoriteId);
+    final favorite = matches.isEmpty ? null : matches.first;
 
     final maxBest = games.fold<int>(
       1,

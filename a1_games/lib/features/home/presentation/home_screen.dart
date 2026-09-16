@@ -10,6 +10,7 @@ import '../../../core/services/daily_challenge_service.dart';
 import '../../../core/services/game_launcher.dart';
 import '../../../core/services/score_service.dart';
 import '../../../models/game_model.dart';
+import '../../../models/game_type.dart';
 import '../../../shared/buttons/scale_tap.dart';
 import '../../../shared/graphics/character_backdrop.dart';
 import '../../../shared/widgets/game_card.dart';
@@ -62,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                   Text(AppConfig.appName, style: AppTextStyles.displayMedium),
                   const SizedBox(height: 4),
                   Text(
-                    'Ready for a quick challenge?',
+                    'Drive the highway. Finish the route to win.',
                     style: AppTextStyles.body.copyWith(
                       color: isDark
                           ? AppColors.textSecondaryDark
@@ -90,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                     onPlay: () => GameLauncher.open(context, challenge.type),
                   ),
                   const SizedBox(height: 24),
-                  Text('10 Games', style: AppTextStyles.headline),
+                  Text('Race', style: AppTextStyles.headline),
                   const SizedBox(height: 4),
                   Text(
                     AppConfig.shortTagline,
@@ -149,11 +150,9 @@ class HomeScreen extends StatelessWidget {
                             : AppColors.textSecondaryLight,
                       ),
                     )
-                  else
-                    ...stats.topScores.map((e) {
-                      final game = GameCatalog.games.firstWhere(
-                        (g) => g.id == e.key,
-                      );
+                    else
+                    ...stats.topScores.where((e) => GameCatalog.games.any((g) => g.id == e.key)).map((e) {
+                      final game = GameCatalog.byType(GameType.carRace);
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: ScaleTap(
@@ -290,7 +289,7 @@ class _FeaturedCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'GAME OF THE DAY',
+                    'START RACE',
                     style: AppTextStyles.caption.copyWith(
                       color: Colors.white.withValues(alpha: 0.9),
                       fontWeight: FontWeight.w700,

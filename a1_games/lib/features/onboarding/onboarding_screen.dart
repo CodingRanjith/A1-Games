@@ -43,27 +43,27 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   static const _pages = [
     _OnboardPage(
       image: 'assets/onboarding/play.png',
-      title: '10 Games.\nEndless Fun.',
+      title: 'Highway\nDriving.',
       subtitle:
-          'Race cities, hunt words, shoot bubbles, survive nights — all in one premium offline arcade.',
+          'Steer with the wheel, gas and brake on the left, race behind your car.',
       accent: AppColors.primaryLight,
-      badge: 'PLAY NOW',
+      badge: 'START RACE',
     ),
     _OnboardPage(
       image: 'assets/onboarding/score.png',
-      title: 'Beat Your\nBest Score.',
+      title: 'Finish To\nWin.',
       subtitle:
-          'Combos, streaks, and personal records stay on your phone. Challenge yourself every day.',
+          'Reach your destination to win. Crash and the race is over.',
       accent: AppColors.secondary,
-      badge: 'HIGH SCORE',
+      badge: 'FINISH LINE',
     ),
     _OnboardPage(
       image: 'assets/onboarding/offline.png',
-      title: 'Play Anywhere.\nEven Offline.',
+      title: 'Pick Route\n& Car.',
       subtitle:
-          'No login. No Wi‑Fi needed. Open GameRush and play in airplane mode anytime.',
+          'Set From and To in the garage. Scores and cars stay on your phone.',
       accent: AppColors.accent,
-      badge: 'OFFLINE READY',
+      badge: 'GARAGE',
     ),
   ];
 

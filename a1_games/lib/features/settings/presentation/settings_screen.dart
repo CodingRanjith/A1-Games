@@ -225,12 +225,13 @@ class _PrivacyScreen extends StatelessWidget {
           Text('Privacy Policy', style: AppTextStyles.headline),
           const SizedBox(height: 12),
           Text(
-            'GameRush 10 is an offline-first casual games app.\n\n'
+            '${AppConfig.appFullName} is a live-map car racing game.\n\n'
             '• No account is required.\n'
             '• No personal information is collected by the core application.\n'
-            '• Gameplay data (scores, settings, statistics) is stored only on your device.\n'
+            '• Scores, cars, and route picks are stored only on your device.\n'
             '• No backend or cloud database is required for gameplay.\n'
-            '• The app works fully in airplane mode.\n\n'
+            '• Street map tiles come from OpenStreetMap. Satellite tiles come from Esri World Imagery. Those need internet.\n'
+            '• Race logic, cars, and scores still work on your phone.\n\n'
             'If advertising or analytics are added in a future version, this policy will be updated accordingly. '
             'This version does not include ads or analytics SDKs.',
             style: AppTextStyles.body,

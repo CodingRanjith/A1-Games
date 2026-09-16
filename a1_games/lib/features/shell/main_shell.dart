@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../games/presentation/games_screen.dart';
 import '../home/presentation/home_screen.dart';
 import '../settings/presentation/settings_screen.dart';
 import '../stats/presentation/stats_screen.dart';
@@ -17,7 +16,6 @@ class _MainShellState extends State<MainShell> {
 
   final _pages = const [
     HomeScreen(),
-    GamesScreen(),
     StatsScreen(),
     SettingsScreen(),
   ];
@@ -37,11 +35,6 @@ class _MainShellState extends State<MainShell> {
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home_rounded),
             label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.sports_esports_outlined),
-            selectedIcon: Icon(Icons.sports_esports_rounded),
-            label: 'Games',
           ),
           NavigationDestination(
             icon: Icon(Icons.bar_chart_outlined),

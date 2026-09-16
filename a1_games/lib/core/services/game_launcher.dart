@@ -9,38 +9,16 @@ import '../../core/services/sound_service.dart';
 import '../../models/game_model.dart';
 import '../../models/game_session.dart';
 import '../../models/game_type.dart';
-import '../../features/games/bird_hit/bird_hit_screen.dart';
-import '../../features/games/bubble_shooter/bubble_shooter_screen.dart';
 import '../../features/games/car_race/car_race_screen.dart';
-import '../../features/games/city_survival/city_survival_screen.dart';
-import '../../features/games/color_match/color_match_screen.dart';
-import '../../features/games/fast_math/fast_math_screen.dart';
-import '../../features/games/memory_cards/memory_cards_screen.dart';
-import '../../features/games/movie_finder/movie_finder_screen.dart';
-import '../../features/games/number_merge/number_merge_screen.dart';
-import '../../features/games/word_hunt/word_hunt_screen.dart';
 
 class GameLauncher {
   GameLauncher._();
 
-  static Future<void> open(BuildContext context, GameType type) {
-    final game = GameCatalog.byType(type);
-    final Widget screen = switch (type) {
-      GameType.carRace => const CarRaceScreen(),
-      GameType.colorMatch => const ColorMatchScreen(),
-      GameType.numberMerge => const NumberMergeScreen(),
-      GameType.memoryCards => const MemoryCardsScreen(),
-      GameType.wordHunt => const WordHuntScreen(),
-      GameType.movieFinder => const MovieFinderScreen(),
-      GameType.bubbleShooter => const BubbleShooterScreen(),
-      GameType.birdHit => const BirdHitScreen(),
-      GameType.fastMath => const FastMathScreen(),
-      GameType.citySurvival => const CitySurvivalScreen(),
-    };
-
+  static Future<void> open(BuildContext context, [GameType type = GameType.carRace]) {
+    final game = GameCatalog.byType(GameType.carRace);
     return Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => screen,
+        pageBuilder: (context, animation, secondaryAnimation) => const CarRaceScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,

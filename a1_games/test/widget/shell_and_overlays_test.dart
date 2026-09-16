@@ -13,7 +13,7 @@ import 'package:a1_games/core/services/score_service.dart';
 import 'package:a1_games/core/services/sound_service.dart';
 import 'package:a1_games/data/local/local_storage_service.dart';
 import 'package:a1_games/features/games/car_race/car_garage_service.dart';
-import 'package:a1_games/features/shell/main_shell.dart';
+import 'package:a1_games/features/setup/character_select_screen.dart';
 import 'package:a1_games/models/game_session.dart';
 import 'package:a1_games/shared/dialogs/game_over_overlay.dart';
 import 'package:a1_games/shared/widgets/game_card.dart';
@@ -58,12 +58,14 @@ void main() {
     storage = LocalStorageService(prefs);
   });
 
-  testWidgets('MainShell shows Home tab with app name', (tester) async {
-    await tester.pumpWidget(_wrap(const MainShell(), storage));
-    await tester.pumpAndSettle();
-    expect(find.text(AppConfig.appName), findsWidgets);
-    expect(find.text('Ready for a quick challenge?'), findsOneWidget);
-    expect(find.text("Today's Challenge"), findsOneWidget);
+  testWidgets('Character select is the setup step after intro', (tester) async {
+    await tester.pumpWidget(
+      _wrap(CharacterSelectScreen(onNext: () {}), storage),
+    );
+    await tester.pump();
+    expect(find.text('Choose driver'), findsOneWidget);
+    expect(find.text('SELECT DRIVER'), findsOneWidget);
+    expect(find.text(AppConfig.appName), findsNothing);
   });
 
   testWidgets('GameCard shows play affordance', (tester) async {
@@ -73,7 +75,7 @@ void main() {
         theme: AppTheme.light(),
         home: Scaffold(
           body: SizedBox(
-            height: 220,
+            height: 260,
             child: GameCard(game: game, onPlay: () {}),
           ),
         ),

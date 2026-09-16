@@ -34,6 +34,10 @@ class RaceCarSpec {
 class CarCatalog {
   CarCatalog._();
 
+  static const String cycle = 'assets/images/cars/cycle.png';
+  static const String bike = 'assets/images/cars/bike.png';
+  static const String truck = 'assets/images/cars/truck.png';
+  static const String bus = 'assets/images/cars/bus.png';
   static const String emberGt = 'assets/images/cars/ember_gt.png';
   static const String nightline = 'assets/images/cars/nightline.png';
   static const String voltX = 'assets/images/cars/volt_x.png';
@@ -64,9 +68,37 @@ class CarCatalog {
 
   static const List<RaceCarSpec> playerCars = [
     RaceCarSpec(
+      id: 'cycle',
+      name: 'Cycle',
+      tagline: 'Free city cycle',
+      asset: cycle,
+      color: Color(0xFF3A3D42),
+      cost: 0,
+      accel: 0.28,
+      brakeForce: 0.35,
+      handling: 1.35,
+      nitroBoost: 1.05,
+      cruiseCap: 4.2,
+      widthFactor: 0.52,
+    ),
+    RaceCarSpec(
+      id: 'bike',
+      name: 'Bike',
+      tagline: 'Free street bike',
+      asset: bike,
+      color: Color(0xFF1E1E22),
+      cost: 0,
+      accel: 0.62,
+      brakeForce: 0.44,
+      handling: 1.4,
+      nitroBoost: 1.25,
+      cruiseCap: 6.2,
+      widthFactor: 0.68,
+    ),
+    RaceCarSpec(
       id: 'ember_gt',
-      name: 'Ember GT',
-      tagline: 'Balanced night racer',
+      name: 'Car',
+      tagline: 'Free city sedan',
       asset: emberGt,
       color: Color(0xFFD62830),
       cost: 0,
@@ -83,7 +115,7 @@ class CarCatalog {
       tagline: 'Precise city handling',
       asset: nightline,
       color: Color(0xFF12203A),
-      cost: 40,
+      cost: 0,
       accel: 0.42,
       brakeForce: 0.55,
       handling: 1.22,
@@ -97,7 +129,7 @@ class CarCatalog {
       tagline: 'Instant electric boost',
       asset: voltX,
       color: Color(0xFF14AABC),
-      cost: 90,
+      cost: 0,
       accel: 0.72,
       brakeForce: 0.50,
       handling: 1.08,
@@ -111,7 +143,7 @@ class CarCatalog {
       tagline: 'Heavy highway cruiser',
       asset: titan,
       color: Color(0xFFD26E28),
-      cost: 140,
+      cost: 0,
       accel: 0.38,
       brakeForce: 0.40,
       handling: 0.82,
@@ -125,13 +157,41 @@ class CarCatalog {
       tagline: 'Top-tier street super',
       asset: phantomRs,
       color: Color(0xFFECEEF2),
-      cost: 280,
+      cost: 0,
       accel: 0.85,
       brakeForce: 0.62,
       handling: 1.18,
       nitroBoost: 1.85,
       cruiseCap: 8.2,
       widthFactor: 1.05,
+    ),
+    RaceCarSpec(
+      id: 'truck',
+      name: 'Truck',
+      tagline: 'Free highway truck',
+      asset: truck,
+      color: Color(0xFFC8CDD2),
+      cost: 0,
+      accel: 0.32,
+      brakeForce: 0.36,
+      handling: 0.72,
+      nitroBoost: 1.1,
+      cruiseCap: 5.6,
+      widthFactor: 1.32,
+    ),
+    RaceCarSpec(
+      id: 'bus',
+      name: 'Bus',
+      tagline: 'Free city bus',
+      asset: bus,
+      color: Color(0xFFD6A820),
+      cost: 0,
+      accel: 0.3,
+      brakeForce: 0.34,
+      handling: 0.68,
+      nitroBoost: 1.08,
+      cruiseCap: 5.2,
+      widthFactor: 1.42,
     ),
   ];
 
@@ -144,6 +204,10 @@ class CarCatalog {
   ];
 
   static const List<String> allAssetPaths = [
+    cycle,
+    bike,
+    truck,
+    bus,
     emberGt,
     nightline,
     voltX,
